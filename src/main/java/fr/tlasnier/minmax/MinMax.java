@@ -25,9 +25,7 @@ public class MinMax {
     }
 
     private Pair<Coup,Double> minmaxRec(JeuIA jeu, int profondeur, int minmax, double alpha, double beta) {
-        //System.out.println("jeu = [" + jeu + "],\n profondeur = [" + profondeur + "],\n minmax = [" + minmax + "],\n alpha = [" + alpha + "],\n beta = [" + beta + "]\n\n");
         if(jeu.estFini() || profondeur == 0) {
-           //System.out.println(jeu.evaluer());
             return new Pair<Coup, Double>(null, jeu.evaluer(_jeu.getJoueurCourant()));
         }
         Coup meilleurCoup = null;
@@ -35,25 +33,28 @@ public class MinMax {
 
         for(Coup coup : jeu.listerLesCoups()) {
             double score = minmaxRec (( ((JeuIA) jeu.getClone()).jouerLeCoup(coup)), //produit le jeu "fils"
-                                        profondeur - 1, -minmax, -beta, -alpha)
+                                        profondeur - 1, -minmax, alpha, beta)
                                 .getValue();
-            //System.out.println(score);
-/*
-            if (score >= alpha) {
-                alpha = score ;
-                meilleurCoup = coup ;
-                if (alpha >= beta) {
-                    System.out.println("Coupure Alpha_Beta : \t" + meilleurScore);
-                    return new Pair<Coup, Double>(meilleurCoup, meilleurScore);
+
+            if (minmax == MIN) {
+                if (alpha > score) {
+                    return new Pair<Coup, Double>(coup, score);
                 }
-            }*/
+                beta = (beta < score ? beta : score);
+            }
+
+            if (minmax == MAX) {
+                if (score > beta) {
+                    return new Pair<Coup, Double>(coup, score);
+                }
+                alpha = (alpha > score ? alpha : score);
+            }
 
             if( (minmax == MAX && score > meilleurScore) || (minmax == MIN && score < meilleurScore)) {
                 meilleurCoup = coup;
                 meilleurScore = score;
             }
         }
-        System.out.println("Meilleur score = " +meilleurScore);
         return new Pair<Coup, Double>(meilleurCoup, meilleurScore);
     }
 
