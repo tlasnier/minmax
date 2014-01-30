@@ -84,9 +84,4 @@ public class MinMax {
 
         return new Pair<Coup, Double>(meilleurCoup, meilleurScore);
     }
-
-    private boolean alphabeta(double alpha, double beta, double score) {
-        return  (score >= alpha && score >=beta);
-    }
-
 }
