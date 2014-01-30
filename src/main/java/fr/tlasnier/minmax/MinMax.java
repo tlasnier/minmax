@@ -25,7 +25,7 @@ public class MinMax {
     }
 
     private Pair<Coup,Double> minmaxRec(JeuIA jeu, int profondeur, int minmax, double alpha, double beta) {
-        if(jeu.estFini() || profondeur == 0) {
+        if(profondeur == 0 || jeu.estFini()) { //évaluation paresseuse plus efficace
             return new Pair<Coup, Double>(null, jeu.evaluer(_jeu.getJoueurCourant()));
         }
         Coup meilleurCoup = null;
