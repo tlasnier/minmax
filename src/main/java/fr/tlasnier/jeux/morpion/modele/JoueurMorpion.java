@@ -12,6 +12,7 @@ public class JoueurMorpion implements Joueur {
         this.camp = camp;
     }
 
+    @Override
     public int getCamp() {
         return camp;
     }

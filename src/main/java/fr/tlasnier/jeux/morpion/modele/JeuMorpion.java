@@ -33,7 +33,7 @@ public class JeuMorpion implements JeuIA {
     public JeuIA jouerLeCoup(Coup coup) {
         CoupMorpion coupMorpion = (CoupMorpion) coup;
         try {
-            plateau.set(coupMorpion.getI(), coupMorpion.getJ(), ((JoueurMorpion) getJoueurCourant()).getCamp());
+            plateau.set(coupMorpion.getI(), coupMorpion.getJ(), getJoueurCourant().getCamp());
             joueurCourant = !joueurCourant;
         } catch (CaseDejaJoueeException e) {
             System.out.println(e.getMessage());
@@ -70,7 +70,7 @@ public class JeuMorpion implements JeuIA {
 
     @Override
     public double evaluer(Joueur joueur) {
-        int campDuJoueur = ((JoueurMorpion)joueur).getCamp();
+        int campDuJoueur = joueur.getCamp();
 
         double scoreX = 1, scoreO = 1;
         boolean victoireX = false, victoireO = false;
@@ -139,7 +139,7 @@ public class JeuMorpion implements JeuIA {
             return (campDuJoueur == Morpion.O ? 10000 : 0);
 
         {
-            if (((JoueurMorpion)getJoueurCourant()).getCamp() == Morpion.X)
+            if (getJoueurCourant().getCamp() == Morpion.X)
                 scoreX*=2;
             else
                 scoreO*=2;
@@ -152,7 +152,7 @@ public class JeuMorpion implements JeuIA {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("---------------------------\n").
-                append("C'est au joueur ").append(((JoueurMorpion)getJoueurCourant()).getCamp()).append(" de jouer!\n").
+                append("C'est au joueur ").append(getJoueurCourant().getCamp()).append(" de jouer!\n").
                 append(plateau);
         return builder.toString();
     }
