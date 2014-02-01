@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Thibault on 24/01/14.
  */
-public class JeuMorpion implements JeuIA {
+public class JeuMorpion implements JeuIA<CoupMorpion, JoueurMorpion> {
     private PlateauMorpion plateau;
     private JoueurMorpion joueur1 = new JoueurMorpion(Morpion.X);
     private JoueurMorpion joueur2 = new JoueurMorpion(Morpion.O);
@@ -30,10 +30,9 @@ public class JeuMorpion implements JeuIA {
     }
 
     @Override
-    public JeuIA jouerLeCoup(Coup coup) {
-        CoupMorpion coupMorpion = (CoupMorpion) coup;
+    public JeuIA jouerLeCoup(CoupMorpion coup) {
         try {
-            plateau.set(coupMorpion.getI(), coupMorpion.getJ(), getJoueurCourant().getCamp());
+            plateau.set(coup.getI(), coup.getJ(), getJoueurCourant().getCamp());
             joueurCourant = !joueurCourant;
         } catch (CaseDejaJoueeException e) {
             System.out.println(e.getMessage());
@@ -49,8 +48,8 @@ public class JeuMorpion implements JeuIA {
     }
 
     @Override
-    public List<Coup> listerLesCoups() {
-        List<Coup> liste = new ArrayList<Coup>();
+    public List<CoupMorpion> listerLesCoups() {
+        List<CoupMorpion> liste = new ArrayList<CoupMorpion>();
         for (int i = 0; i < 3 ; i ++)
             for (int j = 0; j < 3 ; j++)
                 if (plateau.get(i,j) == Morpion.EMPTY)
@@ -59,7 +58,7 @@ public class JeuMorpion implements JeuIA {
     }
 
     @Override
-    public Joueur getJoueurCourant() {
+    public JoueurMorpion getJoueurCourant() {
         return (joueurCourant? joueur1 : joueur2);
     }
 
