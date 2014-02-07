@@ -13,7 +13,7 @@ public class PlateauMorpion implements Clonable{
     public PlateauMorpion() {
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
-                plateau[i][j] = 0;
+                plateau[i][j] = Morpion.EMPTY;
     }
 
     public PlateauMorpion(PlateauMorpion original) {
