@@ -1,9 +1,8 @@
 package fr.tlasnier.jeux.morpion.modele;
 
-import fr.tlasnier.jeux.morpion.exception.CaseDejaJoueeException;
-import fr.tlasnier.jeux.morpion.exception.CaseInexistanteException;
+import fr.tlasnier.jeux.morpion.modele.exception.CaseDejaJoueeException;
+import fr.tlasnier.jeux.morpion.modele.exception.CaseInexistanteException;
 import fr.tlasnier.minmax.Clonable;
-import fr.tlasnier.minmax.Coup;
 import fr.tlasnier.minmax.JeuIA;
 import fr.tlasnier.minmax.Joueur;
 

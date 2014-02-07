@@ -1,4 +1,4 @@
-package fr.tlasnier.jeux.morpion.exception;
+package fr.tlasnier.jeux.morpion.modele.exception;
 
 /**
  * Created by Thibault on 24/01/14.
