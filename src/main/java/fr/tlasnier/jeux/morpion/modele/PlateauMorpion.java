@@ -26,8 +26,8 @@ public class PlateauMorpion implements Clonable{
         return plateau[i][j];
     }
 
-    public boolean ligneGagnee() {
-        return (ligneGagnee(0) || ligneGagnee(1) || ligneGagnee(2));
+    public boolean ligneGagnee(CoupMorpion dernierCoup) {
+        return ligneGagnee(dernierCoup.getI());
     }
 
     public boolean ligneGagnee(int i) {
@@ -35,8 +35,8 @@ public class PlateauMorpion implements Clonable{
         return (premiereCase != Morpion.EMPTY && premiereCase == plateau[i][1] && premiereCase == plateau[i][2]);
     }
 
-    public boolean colonneGagnee() {
-        return (colonneGagnee(0) || colonneGagnee(1) || colonneGagnee(2));
+    public boolean colonneGagnee(CoupMorpion dernierCoup) {
+        return colonneGagnee(dernierCoup.getJ());
 
     }
 
@@ -45,7 +45,10 @@ public class PlateauMorpion implements Clonable{
         return (premiereCase != Morpion.EMPTY && premiereCase == plateau[1][j] && premiereCase == plateau[2][j]);
     }
 
-    public boolean diagonaleGagnee() {
+
+    public boolean diagonaleGagnee(CoupMorpion dernierCoup) {
+        if (dernierCoup.getI() == 1 || dernierCoup.getJ() == 1)
+            return false;
         return premiereDiagonaleGagnee() || deuxiemeDiagonaleGagnee();
     }
 

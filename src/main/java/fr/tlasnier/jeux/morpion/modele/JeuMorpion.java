@@ -16,6 +16,7 @@ public class JeuMorpion implements JeuIA<CoupMorpion, JoueurMorpion> {
     private PlateauMorpion plateau;
     private JoueurMorpion joueur1 = new JoueurMorpion(Morpion.X);
     private JoueurMorpion joueur2 = new JoueurMorpion(Morpion.O);
+    private CoupMorpion dernierCoup;
     private boolean joueurCourant; //vrai si joueur 1 est le joueur courant.
 
     public JeuMorpion() {
@@ -25,6 +26,7 @@ public class JeuMorpion implements JeuIA<CoupMorpion, JoueurMorpion> {
 
     public JeuMorpion(JeuMorpion jeuMorpion) {
         plateau = (PlateauMorpion)jeuMorpion.plateau.getClone();
+        dernierCoup = jeuMorpion.dernierCoup;
         joueurCourant = jeuMorpion.joueurCourant;
     }
 
@@ -32,6 +34,7 @@ public class JeuMorpion implements JeuIA<CoupMorpion, JoueurMorpion> {
     public JeuIA jouerLeCoup(CoupMorpion coup) {
         try {
             plateau.set(coup.getI(), coup.getJ(), getJoueurCourant().getCamp());
+            dernierCoup = coup;
             joueurCourant = !joueurCourant;
         } catch (CaseDejaJoueeException e) {
             System.out.println(e.getMessage());
@@ -43,7 +46,12 @@ public class JeuMorpion implements JeuIA<CoupMorpion, JoueurMorpion> {
 
     @Override
     public boolean estFini() {
-        return plateau.estPlein() || plateau.diagonaleGagnee() || plateau.ligneGagnee() || plateau.colonneGagnee();
+        if (getDernierCoup() == null)
+            return false;
+        return  plateau.estPlein() ||
+                plateau.diagonaleGagnee(getDernierCoup()) ||
+                plateau.ligneGagnee(getDernierCoup()) ||
+                plateau.colonneGagnee(getDernierCoup());
     }
 
     @Override
@@ -59,6 +67,10 @@ public class JeuMorpion implements JeuIA<CoupMorpion, JoueurMorpion> {
     @Override
     public JoueurMorpion getJoueurCourant() {
         return (joueurCourant? joueur1 : joueur2);
+    }
+
+    public CoupMorpion getDernierCoup() {
+        return dernierCoup;
     }
 
     @Override
