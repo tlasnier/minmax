@@ -2,6 +2,9 @@ package fr.tlasnier.minmax;
 
 import javafx.util.Pair;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by Thibault on 25/01/14.
  */
@@ -26,25 +29,28 @@ public class MinMax<C extends Coup, J extends Joueur> {
 */
     private Pair<C,Double> minmaxRec(JeuIA<C,J> jeu, int profondeur, int minmax, double alpha, double beta) {
         if(profondeur == 0 || jeu.estFini()) { //évaluation paresseuse plus efficace
-            return new Pair<C, Double>(null, jeu.evaluer(_jeu.getJoueurCourant()));
+            double  score =  jeu.evaluer(_jeu.getJoueurCourant());
+            //System.out.println(score);
+            return new Pair<C, Double>(null, score/*jeu.evaluer(_jeu.getJoueurCourant())*/);
         }
         C meilleurCoup = null;
         double meilleurScore = minmax * Double.NEGATIVE_INFINITY; //+Inf si on doit minimiser, -Inf si on doit maximiser
-
-        for(C coup : jeu.listerLesCoups()) {
+        List<C> coups = jeu.listerLesCoups();
+        Collections.shuffle(coups);
+        for(C coup : coups) {
             double score = minmaxRec (( ((JeuIA) jeu.getClone()).jouerLeCoup(coup)), //produit le jeu "fils"
                                         profondeur - 1, -minmax, alpha, beta)
                                 .getValue();
 
             if (minmax == MIN) {
-                if (alpha > score) {
+                if (alpha >= score) {
                     return new Pair<C, Double>(coup, score);
                 }
                 beta = (beta < score ? beta : score);
             }
 
             if (minmax == MAX) {
-                if (score > beta) {
+                if (score >= beta) {
                     return new Pair<C, Double>(coup, score);
                 }
                 alpha = (alpha > score ? alpha : score);

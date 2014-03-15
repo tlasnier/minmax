@@ -23,7 +23,7 @@ public class Puissance4Main {
             j = clavier.nextInt();
 
             if (j != -1 ) coup = new CoupPuissance4(j);
-            else coup = minMax.minmax(3);
+            else coup = minMax.minmax(9);
 
             jeu.jouerLeCoup(coup);
         }

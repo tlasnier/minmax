@@ -69,7 +69,7 @@ public class JeuPuissance4 implements JeuIA<CoupPuissance4, JoueurPuissance4> {
 
         //checker la ligne :
         int jetonsAlignes = 0;
-        for (int j = colonne - 3; j < colonne + 3; j++) {
+        for (int j = colonne - 3; j <= colonne + 3; j++) {
             try {
                 if (plateau.get(ligne, j) == camp)
                     jetonsAlignes ++;
@@ -86,7 +86,7 @@ public class JeuPuissance4 implements JeuIA<CoupPuissance4, JoueurPuissance4> {
 
         //checker la colonne :
         jetonsAlignes = 0;
-        for (int i = ligne - 3; i < ligne + 3; i++) {
+        for (int i = ligne - 3; i <= ligne; i++) {
             try {
                 if (plateau.get(i, colonne) == camp)
                     jetonsAlignes ++;
@@ -103,7 +103,7 @@ public class JeuPuissance4 implements JeuIA<CoupPuissance4, JoueurPuissance4> {
 
         //checker une diagonale :
         jetonsAlignes = 0;
-        for (int j = colonne - 3; j < colonne + 3; j++) {
+        for (int j = colonne - 3; j <= colonne + 3; j++) {
             try {
                 if (plateau.get(ligne - (colonne - j), j) == camp)
                     jetonsAlignes ++;
@@ -120,7 +120,7 @@ public class JeuPuissance4 implements JeuIA<CoupPuissance4, JoueurPuissance4> {
 
         //checker l'autre diagonale :
         jetonsAlignes = 0;
-        for (int j = colonne - 3; j < colonne + 3; j++) {
+        for (int j = colonne - 3; j <= colonne + 3; j++) {
             try {
                 if (plateau.get(ligne + (colonne - j), j) == camp)
                     jetonsAlignes ++;
@@ -142,9 +142,11 @@ public class JeuPuissance4 implements JeuIA<CoupPuissance4, JoueurPuissance4> {
     public List<CoupPuissance4> listerLesCoups() {
         List<CoupPuissance4> coups = new ArrayList<CoupPuissance4>();
 
-        for (int j = 0; j < 8; j++) {
+        for (int j = 0; j < Puissance4.NB_COLONNES; j++) {
             try {
-                coups.add(new CoupPuissance4(plateau.getLigneVide(j)));
+                CoupPuissance4 coup = new CoupPuissance4(j);
+                coup.setLigne(plateau.getLigneVide(j));
+                coups.add(coup);
             } catch (ColonnePleineException e) {
                 //Ne pas ajouter le coup dans la liste
             }
@@ -165,8 +167,22 @@ public class JeuPuissance4 implements JeuIA<CoupPuissance4, JoueurPuissance4> {
 
     @Override
     public double evaluer(Joueur joueur) {
+        //int camp = joueur.getCamp();
+        //int compteur2_j1 = 0, compteur3_j1 = 0,  compteur4_j1 = 0, compteur2_j2 = 0, compteur3_j2 = 0,  compteur4_j2 = 0;
+
+        //compteur de 2 jetons alignés
+        //compteur de 3 jetons alignés
+        //compteur de 4 jetons alignés
+        if (dernierCoup == null) return 0;
+
         //TODO
-        return 0;
+        if (partieGagnee(dernierCoup))
+            if (getJoueurCourant().getCamp() == joueur.getCamp())  //joueur à évaluer a perdu la partie
+                return - 100;
+            else
+                return 100;
+        else
+            return 0;
     }
 
     @Override

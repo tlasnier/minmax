@@ -9,17 +9,17 @@ import fr.tlasnier.minmax.Clonable;
  * Created by Thibault on 07/02/14.
  */
 public class PlateauPuissance4 implements Clonable{
-    private int plateau[][] = new int[8][8];
+    private int plateau[][] = new int[Puissance4.NB_LIGNES][Puissance4.NB_COLONNES];
 
     public PlateauPuissance4() {
-        for(int i = 0; i < 8; i++)
-            for(int j = 0; j < 8; j++)
+        for(int i = 0; i < Puissance4.NB_LIGNES; i++)
+            for(int j = 0; j < Puissance4.NB_COLONNES; j++)
                 plateau[i][j] = Puissance4.EMPTY;
     }
 
     public PlateauPuissance4(PlateauPuissance4 plateauOriginal) {
-        for(int i = 0; i < 8; i++)
-            for(int j = 0; j < 8; j++)
+        for(int i = 0; i < Puissance4.NB_LIGNES; i++)
+            for(int j = 0; j < Puissance4.NB_COLONNES; j++)
                 try {
                     plateau[i][j] = plateauOriginal.get(i,j);
                 } catch (CaseInexistanteException e) {
@@ -28,13 +28,13 @@ public class PlateauPuissance4 implements Clonable{
     }
 
     public int get(int i, int j) throws CaseInexistanteException {
-        if(i < 0 || i > 7 || j < 0 || j > 7)
+        if(i < 0 || i >= Puissance4.NB_LIGNES || j < 0 || j >= Puissance4.NB_COLONNES)
             throw new CaseInexistanteException("La case [" + i + "," + j + "] n'existe pas !");
         return plateau[i][j];
     }
 
     public int getLigneVide(int colonne) throws ColonnePleineException {
-        for(int i = 0; i < 8; i++)
+        for(int i = 0; i < Puissance4.NB_LIGNES; i++)
             try {
                 if(get(i, colonne) == Puissance4.EMPTY)
                     return i;
@@ -46,7 +46,7 @@ public class PlateauPuissance4 implements Clonable{
     }
 
     public void set(int i, int j, int val) throws CaseInexistanteException, CaseDejaJoueeException {
-        if( i < 0 || i >= 8 || j < 0 || j >= 8 )
+        if( i < 0 || i >= Puissance4.NB_LIGNES || j < 0 || j >= Puissance4.NB_COLONNES )
             throw new CaseInexistanteException("La case [" + i + "," + j + "] n'existe pas !");
         if(get(i,j) != Puissance4.EMPTY)
             throw new CaseDejaJoueeException("La case [" + i + "," + j + "] contient déjà la valeur " + get(i,j));
@@ -60,10 +60,10 @@ public class PlateauPuissance4 implements Clonable{
 
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(" | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | \n\n");
-        for(int i = 7; i >= 0 ; i--)
+        builder.append(" | 0 | 1 | 2 | 3 | 4 | 5 | 6 | \n\n");
+        for(int i = Puissance4.NB_LIGNES - 1; i >= 0 ; i--)
         {
-            for(int j = 0; j < 8 ; j++)
+            for(int j = 0; j < Puissance4.NB_COLONNES ; j++)
                 builder.append(" | ").append(plateau[i][j]);
             builder.append(" |\n");
         }
@@ -73,8 +73,8 @@ public class PlateauPuissance4 implements Clonable{
 
     public boolean estPlein() {
 
-        for(int j = 0; j < 8; j++)
-            for(int i = 7; i >= 0; i--)
+        for(int j = 0; j < Puissance4.NB_COLONNES; j++)
+            for(int i = Puissance4.NB_LIGNES - 1; i >= 0; i--)
                 try {
                     if (get(i,j) != Puissance4.EMPTY)
                         return false;
