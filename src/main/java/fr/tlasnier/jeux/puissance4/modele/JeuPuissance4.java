@@ -175,7 +175,6 @@ public class JeuPuissance4 implements JeuIA<CoupPuissance4, JoueurPuissance4> {
         //compteur de 4 jetons alignés
         if (dernierCoup == null) return 0;
 
-        //TODO
         if (partieGagnee(dernierCoup))
             if (getJoueurCourant().getCamp() == joueur.getCamp())  //joueur à évaluer a perdu la partie
                 return - 100;

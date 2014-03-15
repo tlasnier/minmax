@@ -1,7 +1,5 @@
 package fr.tlasnier.minmax;
 
-import javafx.util.Pair;
-
 import java.util.Collections;
 import java.util.List;
 

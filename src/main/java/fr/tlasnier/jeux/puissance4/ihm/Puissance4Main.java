@@ -23,7 +23,11 @@ public class Puissance4Main {
             j = clavier.nextInt();
 
             if (j != -1 ) coup = new CoupPuissance4(j);
-            else coup = minMax.minmax(9);
+            else {
+                long time = System.currentTimeMillis();
+                coup = minMax.minmax(12);
+                System.out.println("Coup joué : " + coup.getColonne() + ", en " + ((System.currentTimeMillis()-time)/1000) +"s");
+            }
 
             jeu.jouerLeCoup(coup);
         }
