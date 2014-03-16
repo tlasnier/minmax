@@ -14,12 +14,14 @@ public class JeuDamesChinoises implements JeuIA<CoupDamesChinoises, JoueurDamesC
     private JoueurDamesChinoises joueur1 = new JoueurDamesChinoises(DamesChinoises.ROUGE);
     private JoueurDamesChinoises joueur2 = new JoueurDamesChinoises(DamesChinoises.BLEU);
     private boolean joueurCourant = true;
+    private CoupDamesChinoises dernierCoup;
 
     public JeuDamesChinoises() {}
 
     public JeuDamesChinoises(JeuDamesChinoises jeuOriginal) {
        plateau = (PlateauDamesChinoises) jeuOriginal.plateau.getClone();
        joueurCourant = jeuOriginal.joueurCourant;
+       dernierCoup = jeuOriginal.dernierCoup;
     }
 
     @Override
@@ -30,7 +32,7 @@ public class JeuDamesChinoises implements JeuIA<CoupDamesChinoises, JoueurDamesC
 
     @Override
     public boolean estFini() {
-        //TODO
+        plateau.pionsPlaces(dernierCoup.getCamp());
         return false;
     }
 

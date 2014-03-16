@@ -57,6 +57,35 @@ public class PlateauDamesChinoises implements Clonable {
         else return plateau[i][j];
     }
 
+    public boolean pionsPlaces(int camp) {
+        if (camp == BLEU) {
+            for (int i = 0; i < 4; i++ )
+                for (int j = 0; i + j < 4; j++)
+                    try {
+                        if (get(i,j) != BLEU)
+                            return false;
+                    } catch (CaseInexistanteException e) {
+                        e.printStackTrace();
+                    }
+            return true;
+
+        }
+
+        else if (camp == ROUGE) {
+            for (int i = LARGEUR-1; i > 2; i-- )
+                for (int j = LARGEUR-1; i + j > 8; j--)
+                    try {
+                        if (get(i,j) != ROUGE)
+                            return false;
+                    } catch (CaseInexistanteException e) {
+                        e.printStackTrace();
+                    }
+            return true;
+        }
+
+        else return false;
+    }
+
     @Override
     public Clonable getClone() {
         return new PlateauDamesChinoises(this);

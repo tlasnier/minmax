@@ -6,16 +6,21 @@ import fr.tlasnier.minmax.Coup;
  * Created by Thibault on 16/03/14.
  */
 public class CoupDamesChinoises implements Coup {
+    private int camp;
     private int i_depart;
     private int j_depart;
     private int i_arrivee;
     private int j_arrivee;
 
-    public CoupDamesChinoises(int i_depart, int j_depart, int i_arrivee, int j_arrivee) {
+    public CoupDamesChinoises(int camp, int i_depart, int j_depart, int i_arrivee, int j_arrivee) {
         this.i_depart = i_depart;
         this.j_depart = j_depart;
         this.i_arrivee = i_arrivee;
         this.j_arrivee = j_arrivee;
+    }
+
+    public int getCamp() {
+        return camp;
     }
 
     public int getI_depart() {
