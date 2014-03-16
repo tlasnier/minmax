@@ -58,7 +58,7 @@ public class JeuPuissance4 implements JeuIA<CoupPuissance4, JoueurPuissance4> {
     private boolean partieGagnee(CoupPuissance4 dernierCoup) {
         int ligne = dernierCoup.getLigne();
         int colonne = dernierCoup.getColonne();
-        int camp = Puissance4.EMPTY;
+        int camp = Puissance4.VIDE;
 
         try {
             camp = plateau.get(ligne, colonne);

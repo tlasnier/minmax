@@ -14,7 +14,7 @@ public class PlateauPuissance4 implements Clonable{
     public PlateauPuissance4() {
         for(int i = 0; i < Puissance4.NB_LIGNES; i++)
             for(int j = 0; j < Puissance4.NB_COLONNES; j++)
-                plateau[i][j] = Puissance4.EMPTY;
+                plateau[i][j] = Puissance4.VIDE;
     }
 
     public PlateauPuissance4(PlateauPuissance4 plateauOriginal) {
@@ -36,7 +36,7 @@ public class PlateauPuissance4 implements Clonable{
     public int getLigneVide(int colonne) throws ColonnePleineException {
         for(int i = 0; i < Puissance4.NB_LIGNES; i++)
             try {
-                if(get(i, colonne) == Puissance4.EMPTY)
+                if(get(i, colonne) == Puissance4.VIDE)
                     return i;
             } catch (CaseInexistanteException e) {
                 e.printStackTrace();
@@ -48,7 +48,7 @@ public class PlateauPuissance4 implements Clonable{
     public void set(int i, int j, int val) throws CaseInexistanteException, CaseDejaJoueeException {
         if( i < 0 || i >= Puissance4.NB_LIGNES || j < 0 || j >= Puissance4.NB_COLONNES )
             throw new CaseInexistanteException("La case [" + i + "," + j + "] n'existe pas !");
-        if(get(i,j) != Puissance4.EMPTY)
+        if(get(i,j) != Puissance4.VIDE)
             throw new CaseDejaJoueeException("La case [" + i + "," + j + "] contient déjà la valeur " + get(i,j));
         plateau[i][j] = val;
     }
@@ -76,7 +76,7 @@ public class PlateauPuissance4 implements Clonable{
         for(int j = 0; j < Puissance4.NB_COLONNES; j++)
             for(int i = Puissance4.NB_LIGNES - 1; i >= 0; i--)
                 try {
-                    if (get(i,j) != Puissance4.EMPTY)
+                    if (get(i,j) != Puissance4.VIDE)
                         return false;
                 } catch (CaseInexistanteException e) {
                     e.printStackTrace();
