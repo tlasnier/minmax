@@ -12,7 +12,7 @@ public class CoupDamesChinoises implements Coup {
     private int i_arrivee;
     private int j_arrivee;
 
-    public CoupDamesChinoises(int camp, int i_depart, int j_depart, int i_arrivee, int j_arrivee) {
+    public CoupDamesChinoises(int i_depart, int j_depart, int i_arrivee, int j_arrivee) {
         this.i_depart = i_depart;
         this.j_depart = j_depart;
         this.i_arrivee = i_arrivee;
@@ -21,6 +21,10 @@ public class CoupDamesChinoises implements Coup {
 
     public int getCamp() {
         return camp;
+    }
+
+    public void setCamp(int c) {
+        camp = c;
     }
 
     public int getI_depart() {

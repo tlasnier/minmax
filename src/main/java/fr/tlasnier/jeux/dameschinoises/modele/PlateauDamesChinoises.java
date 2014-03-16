@@ -46,15 +46,13 @@ public class PlateauDamesChinoises implements Clonable {
     }
 
     public void set(int i, int j, int valeur) throws CaseInexistanteException {
-        if ( i < 0 || i >= LARGEUR || j < 0 || j >= LARGEUR )
-            throw new CaseInexistanteException("La case ("+ i + "," + j +") n'existe pas!");
-        else plateau[i][j] = valeur;
+        verifierExistence(i, j);
+        plateau[i][j] = valeur;
     }
 
     public int get(int i, int j) throws CaseInexistanteException {
-        if ( i < 0 || i >= LARGEUR || j < 0 || j >= LARGEUR )
-            throw new CaseInexistanteException("La case ("+ i + "," + j +") n'existe pas!");
-        else return plateau[i][j];
+        verifierExistence(i, j);
+        return plateau[i][j];
     }
 
     public boolean pionsPlaces(int camp) {
@@ -84,6 +82,12 @@ public class PlateauDamesChinoises implements Clonable {
         }
 
         else return false;
+    }
+
+    public void verifierExistence(int i, int j) throws CaseInexistanteException {
+        if ( i < 0 || i >= LARGEUR || j < 0 || j >= LARGEUR )
+            throw new CaseInexistanteException("La case ("+ i + "," + j +") n'existe pas!");
+
     }
 
     @Override
