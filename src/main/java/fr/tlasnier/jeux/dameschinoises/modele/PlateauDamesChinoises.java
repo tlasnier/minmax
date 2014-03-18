@@ -1,6 +1,7 @@
 package fr.tlasnier.jeux.dameschinoises.modele;
 
 import fr.tlasnier.jeux.dameschinoises.modele.exception.CaseInexistanteException;
+import fr.tlasnier.jeux.dameschinoises.modele.exception.DeplacementNonAutoriseException;
 import fr.tlasnier.minmax.Clonable;
 
 import static fr.tlasnier.jeux.dameschinoises.modele.DamesChinoises.*;
@@ -82,6 +83,60 @@ public class PlateauDamesChinoises implements Clonable {
         }
 
         else return false;
+    }
+
+    public boolean estVoisinDirect(int i1, int j1, int i2, int j2) {
+        return ((Math.abs(i1-i2) == 1) && (j1 == j2)) || (Math.abs(j1-j2) == 1 && (i1 == i2)) || (i1+1==i2 && j1+1 == j2) || (i1-1 == i2 && j1-1 == j2);
+    }
+
+    public boolean estVoisinSaute(int i1, int j1, int i2, int j2) {
+        try {
+
+            if(i1+2 == i2 && j1 == j2) { //deux cases au-dessus
+                if (get(i1+1,j1) != VIDE && get(i2,j2) == VIDE)
+                    return true;
+                else
+                    throw new DeplacementNonAutoriseException("Vous ne pouvez pas passer par la case (" + i2 + "," + j2 +")");
+            }
+            if(i1-2 == i2 && j1 == j2) { //deux cases en-dessous
+                if (get(i1-1,j1) != VIDE && get(i2,j2) == VIDE)
+                    return true;
+                else
+                    throw new DeplacementNonAutoriseException("Vous ne pouvez pas passer par la case (" + i2 + "," + j2 +")");
+            }
+            if(i1 == i2 && j1+2 == j2) { //deux cases à droite
+                if (get(i1,j1+1) != VIDE && get(i2,j2) == VIDE)
+                    return true;
+                else
+                    throw new DeplacementNonAutoriseException("Vous ne pouvez pas passer par la case (" + i2 + "," + j2 +")");
+            }
+            if(i1 == i2 && j1-2 == j2) { //deux cases à gauche
+                if (get(i1,j1-1) != VIDE && get(i2,j2) == VIDE)
+                    return true;
+                else
+                    throw new DeplacementNonAutoriseException("Vous ne pouvez pas passer par la case (" + i2 + "," + j2 +")");
+            }
+            if(i1+2 == i2 && j1+2 == j2) { //deux cases au-dessus à droite
+                if (get(i1+1,j1+1) != VIDE && get(i2,j2) == VIDE)
+                    return true;
+                else
+                    throw new DeplacementNonAutoriseException("Vous ne pouvez pas passer par la case (" + i2 + "," + j2 +")");
+            }
+            if(i1-2 == i2 && j1-2 == j2) { //deux cases en-dessous à gauche
+                if (get(i1-1,j1-1) != VIDE && get(i2,j2) == VIDE)
+                    return true;
+                else
+                    throw new DeplacementNonAutoriseException("Vous ne pouvez pas passer par la case (" + i2 + "," + j2 +")");
+            }
+        }
+        catch (CaseInexistanteException e) {
+            System.out.println(e.getMessage());
+            return false;
+        } catch (DeplacementNonAutoriseException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return false;
     }
 
     public void verifierExistence(int i, int j) throws CaseInexistanteException {

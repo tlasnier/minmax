@@ -1,11 +1,10 @@
 package fr.tlasnier.jeux.dameschinoises.modele;
 
-import fr.tlasnier.jeux.dameschinoises.modele.exception.CaseInexistanteException;
-import fr.tlasnier.jeux.dameschinoises.modele.exception.CaseOccupeeException;
-import fr.tlasnier.jeux.dameschinoises.modele.exception.CaseVideException;
+import fr.tlasnier.jeux.dameschinoises.modele.exception.*;
 import fr.tlasnier.minmax.Clonable;
 import fr.tlasnier.minmax.JeuIA;
 import fr.tlasnier.minmax.Joueur;
+import fr.tlasnier.minmax.Pair;
 
 import java.util.List;
 
@@ -34,12 +33,7 @@ public class JeuDamesChinoises implements JeuIA<CoupDamesChinoises, JoueurDamesC
             int i1 = coup.getI_depart(), i2 = coup.getI_arrivee(), j1 = coup.getJ_depart(), j2 = coup.getJ_arrivee();
             plateau.verifierExistence(i1, j1);
             plateau.verifierExistence(i2, j2);
-            if (plateau.get(i1, j1) == DamesChinoises.VIDE)
-                throw new CaseVideException("La case ("+ i1 + "," + j1 +") est vide!");
-            if (plateau.get(i2, j2) != DamesChinoises.VIDE)
-                throw new CaseOccupeeException("La case d'arrivée("+ i2 + "," + j2 +") est occupee!");
-            if (plateau.get(i1, j1) != getJoueurCourant().getCamp())
-                throw new CaseVideException("La case de départ ("+ i1 + "," + j1 +") ne vous appartient pas!");
+            verifierDeplacements(coup);
 
             //jouer le coup
             coup.setCamp(getJoueurCourant().getCamp());
@@ -50,17 +44,60 @@ public class JeuDamesChinoises implements JeuIA<CoupDamesChinoises, JoueurDamesC
         } catch (CaseInexistanteException e) {
             System.out.println(e.getMessage());
         } catch (CaseVideException e) {
-            System.out.println(e.getMessage());;
+            System.out.println(e.getMessage());
         } catch (CaseOccupeeException e) {
+            System.out.println(e.getMessage());
+        } catch (MauvaisJoueurException e) {
+            System.out.println(e.getMessage());
+        } catch (DeplacementNonAutoriseException e) {
             System.out.println(e.getMessage());
         }
         return this;
     }
 
+    private void verifierDeplacements(CoupDamesChinoises coup) throws CaseInexistanteException, CaseVideException, CaseOccupeeException, MauvaisJoueurException, DeplacementNonAutoriseException {
+        int i1 = coup.getI_depart(), i2 = coup.getI_arrivee(), j1 = coup.getJ_depart(), j2 = coup.getJ_arrivee();
+
+        if (plateau.get(i1, j1) == DamesChinoises.VIDE)
+            throw new CaseVideException("La case ("+ i1 + "," + j1 +") est vide!");
+        if (plateau.get(i2, j2) != DamesChinoises.VIDE)
+            throw new CaseOccupeeException("La case d'arrivée("+ i2 + "," + j2 +") est occupee!");
+        if (plateau.get(i1, j1) != getJoueurCourant().getCamp())
+            throw new MauvaisJoueurException("La case de départ ("+ i1 + "," + j1 +") ne vous appartient pas!");
+
+        //TODO vérifier chaque déplacement
+        boolean first = true;
+        boolean second = true; //second deplacement n'est pas encore passé
+        boolean firstDirect = false;
+        boolean firstIndirect = false;
+        Pair<Integer,Integer> depPrec = null; //deplacement précédent
+        for (Pair<Integer,Integer> dep : coup.getDeplacements()) {
+            if (first)
+                first = false;
+            else if (second) {
+                second = false;
+                if (plateau.estVoisinDirect(depPrec.getKey(), depPrec.getValue(), dep.getKey(), dep.getValue()))
+                    firstDirect = true;
+                else if (plateau.estVoisinSaute(depPrec.getKey(), depPrec.getValue(), dep.getKey(), dep.getValue()))
+                    firstIndirect = true;
+                else
+                    throw new DeplacementNonAutoriseException("Ce n'est pas un déplacement valide");
+            }
+            else {
+                if (firstDirect)
+                    throw new DeplacementNonAutoriseException("Si le premier déplacement ne saute pas de pion, il ne peut pas y en avoir d'autre!");
+                else if (!plateau.estVoisinSaute(depPrec.getKey(), depPrec.getValue(), dep.getKey(), dep.getValue()))
+                    throw new DeplacementNonAutoriseException("Si vous avez commencé une séquence de plusieurs mouvements, tous les mouvements doivent être valides!");
+            }
+            //dans tous les cas:
+            depPrec = dep;
+        }
+
+    }
+
     @Override
     public boolean estFini() {
-        plateau.pionsPlaces(dernierCoup.getCamp());
-        return false;
+        return dernierCoup != null && plateau.pionsPlaces(dernierCoup.getCamp());
     }
 
     @Override
