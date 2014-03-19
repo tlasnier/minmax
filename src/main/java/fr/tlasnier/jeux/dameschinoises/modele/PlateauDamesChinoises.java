@@ -3,6 +3,10 @@ package fr.tlasnier.jeux.dameschinoises.modele;
 import fr.tlasnier.jeux.dameschinoises.modele.exception.CaseInexistanteException;
 import fr.tlasnier.jeux.dameschinoises.modele.exception.DeplacementNonAutoriseException;
 import fr.tlasnier.minmax.Clonable;
+import fr.tlasnier.minmax.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static fr.tlasnier.jeux.dameschinoises.modele.DamesChinoises.*;
 
@@ -85,6 +89,70 @@ public class PlateauDamesChinoises implements Clonable {
         else return false;
     }
 
+    public List<Pair<Integer,Integer>> getVoisinsDirects(int i, int j) {
+        List<Pair<Integer,Integer>> res = new ArrayList<Pair<Integer, Integer>>();
+        try {
+            verifierExistence(i + 1, j);
+            res.add(new Pair<Integer, Integer>(i+1,j));
+        } catch (CaseInexistanteException e) {}
+        try {
+            verifierExistence(i - 1, j);
+            res.add(new Pair<Integer, Integer>(i - 1, j));
+        } catch (CaseInexistanteException e) {}
+        try {
+            verifierExistence(i + 1, j + 1);
+            res.add(new Pair<Integer, Integer>(i + 1, j + 1));
+        } catch (CaseInexistanteException e) {}
+        try {
+            verifierExistence(i - 1, j - 1);
+            res.add(new Pair<Integer, Integer>(i - 1, j - 1));
+        } catch (CaseInexistanteException e) {}
+        try {
+            verifierExistence(i, j + 1);
+            res.add(new Pair<Integer, Integer>(i, j + 1));
+        } catch (CaseInexistanteException e) {}
+        try {
+            verifierExistence(i, j - 1);
+            res.add(new Pair<Integer, Integer>(i, j - 1));
+        } catch (CaseInexistanteException e) {}
+        return res;
+    }
+
+    public List<Pair<Integer,Integer>> getVoisinsDirectsVides(int i, int j) {
+        List<Pair<Integer,Integer>> res = new ArrayList<Pair<Integer, Integer>>();
+        try {
+            verifierExistence(i+1, j);
+            if (get(i+1,j) == VIDE)
+                res.add(new Pair<Integer, Integer>(i+1,j));
+        } catch (CaseInexistanteException e) {}
+        try {
+            verifierExistence(i-1, j);
+            if (get(i-1, j) == VIDE)
+                res.add(new Pair<Integer, Integer>(i-1,j));
+        } catch (CaseInexistanteException e) {}
+        try {
+            verifierExistence(i+1, j+1);
+            if (get(i+1, j+1) == VIDE)
+                res.add(new Pair<Integer, Integer>(i+1,j+1));
+        } catch (CaseInexistanteException e) {}
+        try {
+            verifierExistence(i-1, j-1);
+            if (get(i-1, j-1) == VIDE)
+                res.add(new Pair<Integer, Integer>(i-1,j-1));
+        } catch (CaseInexistanteException e) {}
+        try {
+            verifierExistence(i, j+1);
+            if (get(i, j+1) == VIDE)
+                res.add(new Pair<Integer, Integer>(i,j+1));
+        } catch (CaseInexistanteException e) {}
+        try {
+            verifierExistence(i, j-1);
+            if (get(i, j-1) == VIDE)
+                res.add(new Pair<Integer, Integer>(i,j-1));
+        } catch (CaseInexistanteException e) {}
+        return res;
+    }
+
     public boolean estVoisinDirect(int i1, int j1, int i2, int j2) {
         return ((Math.abs(i1-i2) == 1) && (j1 == j2)) || (Math.abs(j1-j2) == 1 && (i1 == i2)) || (i1+1==i2 && j1+1 == j2) || (i1-1 == i2 && j1-1 == j2);
     }
@@ -139,10 +207,39 @@ public class PlateauDamesChinoises implements Clonable {
         return false;
     }
 
+    public List<Pair<Integer,Integer>> getVoisinsSautesVides(int i, int j) {
+        List<Pair<Integer,Integer>> res = new ArrayList<Pair<Integer, Integer>>();
+        try {
+            if(get(i+1,j) != VIDE && get(i+2, j) == VIDE)
+                res.add(new Pair<Integer, Integer>(i+2,j));
+        }catch (CaseInexistanteException ignored) {}
+        try {
+            if(get(i-1,j) != VIDE && get(i-2, j) == VIDE)
+                res.add(new Pair<Integer, Integer>(i-2,j));
+        }catch (CaseInexistanteException ignored) {}
+        try {
+            if(get(i+1,j+1) != VIDE && get(i+2, j+2) == VIDE)
+                res.add(new Pair<Integer, Integer>(i+2,j+2));
+        }catch (CaseInexistanteException ignored) {}
+        try {
+            if(get(i-1,j-1) != VIDE && get(i-2, j-2) == VIDE)
+                res.add(new Pair<Integer, Integer>(i-2,j-2));
+        }catch (CaseInexistanteException ignored) {}
+        try {
+            if(get(i,j+1) != VIDE && get(i, j+2) == VIDE)
+                res.add(new Pair<Integer, Integer>(i,j+2));
+        }catch (CaseInexistanteException ignored) {}
+        try {
+            if(get(i,j-1) != VIDE && get(i, j-2) == VIDE)
+                res.add(new Pair<Integer, Integer>(i,j-2));
+        }catch (CaseInexistanteException ignored) {}
+
+        return res;
+    }
+
     public void verifierExistence(int i, int j) throws CaseInexistanteException {
         if ( i < 0 || i >= LARGEUR || j < 0 || j >= LARGEUR )
             throw new CaseInexistanteException("La case ("+ i + "," + j +") n'existe pas!");
-
     }
 
     @Override

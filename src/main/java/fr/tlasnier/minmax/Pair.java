@@ -68,7 +68,7 @@ public class Pair<K,V> implements Serializable{
         // these two parameters:
         //  name: a  value: aa
         //  name: aa value: a
-        return key.hashCode() * 13 + (value == null ? 0 : value.hashCode());
+        return key.hashCode() * 31 + (value == null ? 0 : value.hashCode());
     }
 
     /**

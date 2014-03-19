@@ -6,7 +6,10 @@ import fr.tlasnier.minmax.JeuIA;
 import fr.tlasnier.minmax.Joueur;
 import fr.tlasnier.minmax.Pair;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Thibault on 16/03/14.
@@ -102,11 +105,50 @@ public class JeuDamesChinoises implements JeuIA<CoupDamesChinoises, JoueurDamesC
 
     @Override
     public List<CoupDamesChinoises> listerLesCoups() {
-        //TODO
-        return null;
+        int camp = getJoueurCourant().getCamp();
+        List<CoupDamesChinoises> res = new ArrayList<CoupDamesChinoises>();
+        for (int i = 0; i < DamesChinoises.LARGEUR; i++) {
+            for (int j = 0; j < DamesChinoises.LARGEUR; j++) {
+                try {
+                    if (plateau.get(i,j) == camp) {
+                        res.addAll(listerLesCoups(i, j));
+                    }
+                } catch (CaseInexistanteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return res;
     }
 
-    @Override
+    private List<CoupDamesChinoises> listerLesCoups(int i, int j) {
+        Set<CoupDamesChinoises> res = new HashSet<CoupDamesChinoises>();
+        //ajout des voisins directs
+        for (Pair<Integer,Integer> voisin : plateau.getVoisinsDirectsVides(i, j))
+            res.add(new CoupDamesChinoises(i,j,voisin.getKey(),voisin.getValue()));
+
+        for (Pair<Integer,Integer> voisin : plateau.getVoisinsSautesVides(i, j)){
+            CoupDamesChinoises c = new CoupDamesChinoises(i,j,voisin.getKey(),voisin.getValue());
+            if (res.add(c))
+                res.addAll(listerLesCoupsRecursif(c, res));
+
+        }
+
+        return new ArrayList<CoupDamesChinoises>(res);
+    }
+
+    private Set<CoupDamesChinoises> listerLesCoupsRecursif(CoupDamesChinoises coup, Set<CoupDamesChinoises> enCours) {
+        for (Pair<Integer,Integer> voisin : plateau.getVoisinsSautesVides(coup.getI_arrivee(), coup.getJ_arrivee())) {
+            CoupDamesChinoises c = new CoupDamesChinoises(coup).addDeplacement(voisin);
+            if (enCours.add(c))
+                enCours.addAll(listerLesCoupsRecursif(c, enCours));
+        }
+
+        return enCours;
+    }
+
+
+        @Override
     public JoueurDamesChinoises getJoueurCourant() {
         if (joueurCourant)
             return joueur1;
