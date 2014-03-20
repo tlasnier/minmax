@@ -12,23 +12,13 @@ import java.util.Scanner;
  */
 public class DamesChinoisesMain {
     public static void main(String[] args) {
-        /*JeuDamesChinoises jdc = new JeuDamesChinoises();
-        System.out.println(jdc);
-        jdc.jouerLeCoup(new CoupDamesChinoises(0, 1, 1, 2));
-        System.out.println(jdc);
-        jdc.jouerLeCoup(new CoupDamesChinoises(0, 3, 1, 4));
-        System.out.println(jdc);
-        jdc.jouerLeCoup(new CoupDamesChinoises(1, 4, 2, 4));
-        System.out.println(jdc);
-        jdc.jouerLeCoup(new CoupDamesChinoises(0, 6, 1, 6));
-        System.out.println(jdc);*/
-
         JeuDamesChinoises jeu = new JeuDamesChinoises();
         MinMax<CoupDamesChinoises, JoueurDamesChinoises> minMax = new MinMax(jeu);
 
         CoupDamesChinoises coup = null;
         while (!jeu.estFini()) {
             System.out.println(jeu);
+            //System.out.println("Coups possibles : " + jeu.listerLesCoups());
             int i1 = 0, j1 = 0, i2 = 0, j2 = 0;
             Scanner clavier = new Scanner(System.in);
             i1 = clavier.nextInt();
@@ -45,8 +35,9 @@ public class DamesChinoisesMain {
                 }
             }
             else {
-                System.out.println("IA non implémentée!");
-                coup = new CoupDamesChinoises(0,0,0,0);
+                long time = System.currentTimeMillis();
+                coup = minMax.minmax(5);
+                System.out.println("Coup joué : " + coup + ", en " + ((System.currentTimeMillis()-time)/1000.0) +"s");
             }
             jeu.jouerLeCoup(coup);
         }

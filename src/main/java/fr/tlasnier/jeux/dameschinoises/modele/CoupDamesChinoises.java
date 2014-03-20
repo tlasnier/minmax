@@ -63,7 +63,7 @@ public class CoupDamesChinoises implements Coup {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder("[");
+        StringBuilder builder = new StringBuilder("\n[");
         for (Pair<Integer,Integer> dep : deplacements)
             builder.append("[" + dep.getKey() + ":" + dep.getValue() + "], ");
         builder.delete(builder.length()-2, builder.length());

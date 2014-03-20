@@ -15,6 +15,15 @@ import java.util.Set;
  * Created by Thibault on 16/03/14.
  */
 public class JeuDamesChinoises implements JeuIA<CoupDamesChinoises, JoueurDamesChinoises> {
+    private static int[][] eval = {
+            {0,  0,  0,  0,  11, 18, 27},
+            {0,  0,  0,  7,  12, 19, 28},
+            {0,  0,  4,  8,  13, 20, 29},
+            {0,  7,  8,  9,  14, 21, 30},
+            {11, 12, 13, 14, 16, 23, 32},
+            {18, 19, 20, 21, 23, 25, 34},
+            {27, 28, 29, 30, 32, 34, 36}};
+
     private PlateauDamesChinoises plateau = new PlateauDamesChinoises();
     private JoueurDamesChinoises joueur1 = new JoueurDamesChinoises(DamesChinoises.ROUGE);
     private JoueurDamesChinoises joueur2 = new JoueurDamesChinoises(DamesChinoises.BLEU);
@@ -68,7 +77,6 @@ public class JeuDamesChinoises implements JeuIA<CoupDamesChinoises, JoueurDamesC
         if (plateau.get(i1, j1) != getJoueurCourant().getCamp())
             throw new MauvaisJoueurException("La case de départ ("+ i1 + "," + j1 +") ne vous appartient pas!");
 
-        //TODO vérifier chaque déplacement
         boolean first = true;
         boolean second = true; //second deplacement n'est pas encore passé
         boolean firstDirect = false;
@@ -127,6 +135,7 @@ public class JeuDamesChinoises implements JeuIA<CoupDamesChinoises, JoueurDamesC
         for (Pair<Integer,Integer> voisin : plateau.getVoisinsDirectsVides(i, j))
             res.add(new CoupDamesChinoises(i,j,voisin.getKey(),voisin.getValue()));
 
+        //voisins indirects
         for (Pair<Integer,Integer> voisin : plateau.getVoisinsSautesVides(i, j)){
             CoupDamesChinoises c = new CoupDamesChinoises(i,j,voisin.getKey(),voisin.getValue());
             if (res.add(c))
@@ -147,7 +156,6 @@ public class JeuDamesChinoises implements JeuIA<CoupDamesChinoises, JoueurDamesC
         return enCours;
     }
 
-
         @Override
     public JoueurDamesChinoises getJoueurCourant() {
         if (joueurCourant)
@@ -163,8 +171,36 @@ public class JeuDamesChinoises implements JeuIA<CoupDamesChinoises, JoueurDamesC
 
     @Override
     public double evaluer(Joueur joueur) {
-        //TODO
-        return 0;
+        if (estFini())
+            if (joueur.getCamp() == dernierCoup.getCamp())
+                return 10000;
+            else
+                return -10000;
+        int sumJ1 = 0, sumJ2 = 0;
+        for (int i = 0; i < DamesChinoises.LARGEUR; i++) {
+            for (int j = 0; j < DamesChinoises.LARGEUR; j++) {
+                try {
+                    if (plateau.get(i,j) == DamesChinoises.ROUGE)
+                        sumJ1 += distanceJ1(i,j);
+                    else if (plateau.get(i,j) == DamesChinoises.BLEU)
+                        sumJ2 += distanceJ2(i,j);
+                } catch (CaseInexistanteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return joueur.getCamp() == DamesChinoises.ROUGE ? sumJ2-sumJ1 : sumJ1-sumJ2;
+    }
+
+    //Calcule le carré de la distance du pion jusqu'au but du J1
+    private int distanceJ1(int i, int j) {
+//        int dx = DamesChinoises.LARGEUR - j-1, dy = DamesChinoises.LARGEUR -i-1, d = dx > dy ? dx : dy;
+        return eval[DamesChinoises.LARGEUR-1 -i][DamesChinoises.LARGEUR-1-j];
+    }
+        //Calcule le carré de la distance du pion jusqu'au but du J1
+    public int distanceJ2(int i, int j) {
+//        int d = j > i ? j : i;
+        return eval[i][j];
     }
 
     @Override
