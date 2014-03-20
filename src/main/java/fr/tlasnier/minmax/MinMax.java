@@ -13,8 +13,23 @@ public class MinMax<C extends Coup, J extends Joueur> {
 
     private JeuIA<C, J> _jeu;
 
+    private Evaluateur<JeuIA<C,J>, J> evaluateur;
+
     public MinMax(JeuIA<C,J> jeu) {
         this._jeu = jeu;
+    }
+
+    public MinMax(JeuIA<C,J> jeu, Evaluateur<JeuIA<C,J>, J> eval) {
+        this._jeu = jeu;
+        this.evaluateur = eval;
+    }
+
+    public Evaluateur getEvaluateur() {
+        return evaluateur;
+    }
+
+    public void setEvaluateur(Evaluateur<JeuIA<C,J>, J> eval) {
+        evaluateur = eval;
     }
 
     public C minmax(int profondeur) {
@@ -27,9 +42,9 @@ public class MinMax<C extends Coup, J extends Joueur> {
 */
     private Pair<C,Double> minmaxRec(JeuIA<C,J> jeu, int profondeur, int minmax, double alpha, double beta) {
         if(profondeur == 0 || jeu.estFini()) { //évaluation paresseuse plus efficace
-            double  score =  jeu.evaluer(_jeu.getJoueurCourant());
-            //System.out.println(score);
-            return new Pair<C, Double>(null, score/*jeu.evaluer(_jeu.getJoueurCourant())*/);
+            evaluateur.setJeu(jeu);
+            double  score =  evaluateur.evaluer(_jeu.getJoueurCourant());
+            return new Pair<C, Double>(null, score);
         }
         C meilleurCoup = null;
         double meilleurScore = minmax * Double.NEGATIVE_INFINITY; //+Inf si on doit minimiser, -Inf si on doit maximiser
