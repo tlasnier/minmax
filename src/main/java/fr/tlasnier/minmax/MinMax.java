@@ -35,11 +35,11 @@ public class MinMax<C extends Coup, J extends Joueur> {
     public C minmax(int profondeur) {
         return minmaxRec(_jeu, profondeur, MAX, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY).getKey();
     }
-/*
+
     public Coup negamax(int profondeur) {
         return negamaxRec(_jeu, profondeur, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY).getKey();
     }
-*/
+
     private Pair<C,Double> minmaxRec(JeuIA<C,J> jeu, int profondeur, int minmax, double alpha, double beta) {
         if(profondeur == 0 || jeu.estFini()) { //évaluation paresseuse plus efficace
             evaluateur.setJeu(jeu);
@@ -76,22 +76,26 @@ public class MinMax<C extends Coup, J extends Joueur> {
         }
         return new Pair<C, Double>(meilleurCoup, meilleurScore);
     }
-/*
-    private Pair<Coup,Double> negamaxRec(JeuIA jeu, int profondeur, double alpha, double beta) {
-        if(jeu.estFini() || profondeur == 0)
-            return new Pair<Coup, Double>(null, jeu.evaluer(_jeu.getJoueurCourant()));
 
-        Coup meilleurCoup = null;
+    private Pair<C,Double> negamaxRec(JeuIA jeu, int profondeur, double alpha, double beta) {
+        if(profondeur == 0 || jeu.estFini()) { //évaluation paresseuse plus efficace
+            evaluateur.setJeu(jeu);
+            double  score =  evaluateur.evaluer(_jeu.getJoueurCourant());
+            return new Pair<C, Double>(null, score);
+        }
+        C meilleurCoup = null;
         double meilleurScore = Double.NEGATIVE_INFINITY;
 
-        for(Coup coup : jeu.listerLesCoups()) {
+        List<C> coups = jeu.listerLesCoups();
+        Collections.shuffle(coups);
+        for(C coup : coups) {
             double score =  - negamaxRec(((JeuIA) jeu.getClone()).jouerLeCoup(coup), profondeur - 1, -beta, -alpha).getValue();
 
             if (score >= alpha) {
                 alpha = score ;
                 meilleurCoup = coup ;
                 if (alpha >= beta)
-                    return new Pair<Coup, Double>(meilleurCoup, meilleurScore);
+                    return new Pair<C, Double>(meilleurCoup, meilleurScore);
             }
 
             if(score > meilleurScore) {
@@ -101,6 +105,6 @@ public class MinMax<C extends Coup, J extends Joueur> {
 
         }
 
-        return new Pair<Coup, Double>(meilleurCoup, meilleurScore);
-    }  */
+        return new Pair<C, Double>(meilleurCoup, meilleurScore);
+    }
 }
