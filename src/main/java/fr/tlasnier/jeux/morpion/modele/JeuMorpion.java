@@ -4,7 +4,6 @@ import fr.tlasnier.jeux.morpion.modele.exception.CaseDejaJoueeException;
 import fr.tlasnier.jeux.morpion.modele.exception.CaseInexistanteException;
 import fr.tlasnier.minmax.Clonable;
 import fr.tlasnier.minmax.JeuIA;
-import fr.tlasnier.minmax.Joueur;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,10 +88,5 @@ public class JeuMorpion implements JeuIA<CoupMorpion, JoueurMorpion> {
                 append("C'est au joueur ").append(getJoueurCourant().getCamp()).append(" de jouer!\n").
                 append(plateau);
         return builder.toString();
-    }
-
-    @Override
-    public double evaluer(Joueur joueur) {
-        return 0;
     }
 }

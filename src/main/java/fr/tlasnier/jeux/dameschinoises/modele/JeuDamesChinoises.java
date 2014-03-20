@@ -3,7 +3,6 @@ package fr.tlasnier.jeux.dameschinoises.modele;
 import fr.tlasnier.jeux.dameschinoises.modele.exception.*;
 import fr.tlasnier.minmax.Clonable;
 import fr.tlasnier.minmax.JeuIA;
-import fr.tlasnier.minmax.Joueur;
 import fr.tlasnier.minmax.Pair;
 
 import java.util.ArrayList;
@@ -162,11 +161,6 @@ public class JeuDamesChinoises implements JeuIA<CoupDamesChinoises, JoueurDamesC
     @Override
     public Clonable getClone() {
         return new JeuDamesChinoises(this);
-    }
-
-    @Override
-    public double evaluer(Joueur joueur) {
-        return 0;
     }
 
     @Override

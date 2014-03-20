@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Thibault on 25/01/14.
  */
-public interface JeuIA<C extends Coup, J extends Joueur> extends Evaluable, Clonable {
+public interface JeuIA<C extends Coup, J extends Joueur> extends Clonable {
     /**
      * Retourne l'objet lui-même pour pouvoir faire un pipe.
      * @param coup

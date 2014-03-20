@@ -5,7 +5,6 @@ import fr.tlasnier.jeux.puissance4.modele.exception.CaseInexistanteException;
 import fr.tlasnier.jeux.puissance4.modele.exception.ColonnePleineException;
 import fr.tlasnier.minmax.Clonable;
 import fr.tlasnier.minmax.JeuIA;
-import fr.tlasnier.minmax.Joueur;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,17 +162,6 @@ public class JeuPuissance4 implements JeuIA<CoupPuissance4, JoueurPuissance4> {
     @Override
     public Clonable getClone() {
         return new JeuPuissance4(this);
-    }
-
-    @Override
-    public double evaluer(Joueur joueur) {
-        //int camp = joueur.getCamp();
-        //int compteur2_j1 = 0, compteur3_j1 = 0,  compteur4_j1 = 0, compteur2_j2 = 0, compteur3_j2 = 0,  compteur4_j2 = 0;
-
-        //compteur de 2 jetons alignés
-        //compteur de 3 jetons alignés
-        //compteur de 4 jetons alignés
-       return 0;
     }
 
     @Override
