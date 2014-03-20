@@ -64,6 +64,10 @@ public class JeuMorpion implements JeuIA<CoupMorpion, JoueurMorpion> {
         return liste;
     }
 
+    public PlateauMorpion getPlateau() {
+        return plateau;
+    }
+
     @Override
     public JoueurMorpion getJoueurCourant() {
         return (joueurCourant? joueur1 : joueur2);
@@ -79,91 +83,16 @@ public class JeuMorpion implements JeuIA<CoupMorpion, JoueurMorpion> {
     }
 
     @Override
-    public double evaluer(Joueur joueur) {
-        int campDuJoueur = joueur.getCamp();
-
-        double scoreX = 1, scoreO = 1;
-        boolean victoireX = false, victoireO = false;
-        //par lignes
-        for(int i = 0; i < 3 ; i++) {
-            int compteVide = 0, compteX = 0, compteO = 0;
-            for (int j = 0; j < 3; j++){
-                int _case = plateau.get(i,j);
-                int tmp = (_case == Morpion.EMPTY ? compteVide++ : (_case == Morpion.X ? compteX++ : compteO++));
-            }
-            switch (compteVide) {
-                case 3 : scoreX++; scoreO++; break;
-                case 2 : if (compteX == 1) scoreX+=5; else scoreO+=5; break;
-                case 1 : if (compteX == 2) scoreX+=20; else if (compteO == 2) scoreO+=20; break;
-                case 0 : if (compteX == 3) victoireX = true; else if (compteO == 3) victoireO = true; break;
-            }
-        }
-
-        //par colonnes
-        for(int j = 0; j < 3 ; j++) {
-            int compteVide = 0, compteX = 0, compteO = 0;
-            for (int i = 0; i < 3; i++){
-                int _case = plateau.get(i,j);
-                int tmp = (_case == Morpion.EMPTY ? compteVide++ : (_case == Morpion.X ? compteX++ : compteO++));
-            }
-            switch (compteVide) {
-                case 3 : scoreX++; scoreO++; break;
-                case 2 : if (compteX == 1) scoreX+=5; else scoreO+=5; break;
-                case 1 : if (compteX == 2) scoreX+=20; else if (compteO == 2) scoreO+=20; break;
-                case 0 : if (compteX == 3) victoireX = true; else if (compteO == 3) victoireO = true; break;
-            }
-        }
-
-        //diagonale 1:
-        int compteVide = 0, compteX = 0, compteO = 0;
-        int _case = plateau.get(0,0);
-        int tmp = (_case == Morpion.EMPTY ? compteVide++ : (_case == Morpion.X ? compteX++ : compteO++));
-        _case = plateau.get(1,1);
-        int tmp2 = (_case == Morpion.EMPTY ? compteVide++ : (_case == Morpion.X ? compteX++ : compteO++));
-         _case = plateau.get(2,2);
-        int tmp3 = (_case == Morpion.EMPTY ? compteVide++ : (_case == Morpion.X ? compteX++ : compteO++));
-        switch (compteVide) {
-            case 3 : scoreX++; scoreO++; break;
-            case 2 : if (compteX == 1) scoreX+=5; else scoreO+=5; break;
-            case 1 : if (compteX == 2) scoreX+=20; else if (compteO == 2) scoreO+=20; break;
-            case 0 : if (compteX == 3) victoireX = true; else if (compteO == 3) victoireO = true; break;
-        }
-        //diagonale 2 :
-        compteVide = 0; compteX = 0; compteO = 0;
-        _case = plateau.get(2,0);
-        int tmp4 = (_case == Morpion.EMPTY ? compteVide++ : (_case == Morpion.X ? compteX++ : compteO++));
-        _case = plateau.get(1,1);
-        int tmp5 = (_case == Morpion.EMPTY ? compteVide++ : (_case == Morpion.X ? compteX++ : compteO++));
-        _case = plateau.get(0,2);
-        int tmp6 = (_case == Morpion.EMPTY ? compteVide++ : (_case == Morpion.X ? compteX++ : compteO++));
-        switch (compteVide) {
-            case 3 : scoreX++; scoreO++; break;
-            case 2 : if (compteX == 1) scoreX+=5; else scoreO+=5; break;
-            case 1 : if (compteX == 2) scoreX+=20; else if (compteO == 2) scoreO+=20; break;
-            case 0 : if (compteX == 3) victoireX = true; else if (compteO == 3) victoireO = true; break;
-        }
-
-        if (victoireX)
-            return (campDuJoueur == Morpion.X ? 10000 : 0);
-        if (victoireO)
-            return (campDuJoueur == Morpion.O ? 10000 : 0);
-
-        {
-            if (getJoueurCourant().getCamp() == Morpion.X)
-                scoreX*=2;
-            else
-                scoreO*=2;
-        }
-
-        return (campDuJoueur == Morpion.X ? scoreX/scoreO : scoreO/scoreX);
-    }
-
-    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("---------------------------\n").
                 append("C'est au joueur ").append(getJoueurCourant().getCamp()).append(" de jouer!\n").
                 append(plateau);
         return builder.toString();
+    }
+
+    @Override
+    public double evaluer(Joueur joueur) {
+        return 0;
     }
 }
