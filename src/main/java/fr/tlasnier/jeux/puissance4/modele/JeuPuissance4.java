@@ -49,13 +49,13 @@ public class JeuPuissance4 implements JeuIA<CoupPuissance4, JoueurPuissance4> {
 
     @Override
     public boolean estFini() {
-        //début de partie, aucun coup n'a été joué
-        if (dernierCoup == null)
-            return false;
-        return partieGagnee(dernierCoup) || plateau.estPlein();
+        return partieGagnee() || plateau.estPlein();
     }
 
-    private boolean partieGagnee(CoupPuissance4 dernierCoup) {
+    public boolean partieGagnee() {
+        if (dernierCoup == null)
+            return false;
+
         int ligne = dernierCoup.getLigne();
         int colonne = dernierCoup.getColonne();
         int camp = Puissance4.VIDE;
@@ -173,15 +173,7 @@ public class JeuPuissance4 implements JeuIA<CoupPuissance4, JoueurPuissance4> {
         //compteur de 2 jetons alignés
         //compteur de 3 jetons alignés
         //compteur de 4 jetons alignés
-        if (dernierCoup == null) return 0;
-
-        if (partieGagnee(dernierCoup))
-            if (getJoueurCourant().getCamp() == joueur.getCamp())  //joueur à évaluer a perdu la partie
-                return - 100;
-            else
-                return 100;
-        else
-            return 0;
+       return 0;
     }
 
     @Override
